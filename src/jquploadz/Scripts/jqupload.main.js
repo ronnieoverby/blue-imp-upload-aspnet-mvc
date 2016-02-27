@@ -1,4 +1,4 @@
-function setupFileUpload(uploadUrl) {
+function setupFileUpload() {
     /*
      * jQuery File Upload Plugin JS Example
      * https://github.com/blueimp/jQuery-File-Upload
@@ -19,7 +19,7 @@ function setupFileUpload(uploadUrl) {
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: uploadUrl
+            paramName: 'file'
         });
 
         // Enable iframe cross-domain access via redirect option:

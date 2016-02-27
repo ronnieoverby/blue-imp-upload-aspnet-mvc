@@ -51,12 +51,12 @@ namespace jquploadz.Controllers
         }
 
         [HttpGet]
-        public ActionResult Upload(string[] names = null)
+        public ActionResult Upload(string name = null)
         {
             var folder = GetUploadFolder();
 
             var files = from file in folder.GetFiles()
-                        where names == null || names.Contains(file.Name)
+                        where name == null || name.Equals(file.Name, StringComparison.OrdinalIgnoreCase)
                         select new
                         {
                             deleteType = "POST",
@@ -74,19 +74,10 @@ namespace jquploadz.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload()
+        public ActionResult Upload(HttpPostedFileBase file)
         {
-            var names = new List<string>();
-            foreach (string name in Request.Files)
-            {
-                var file = Request.Files[name];
-                names.Add(file.FileName);
-                SaveFileToDisk(file);
-            }
-
-
-            var actionResult = Upload(names.ToArray());
-            return actionResult;
+            SaveFileToDisk(file);
+            return Upload(file.FileName);
         }
 
         private static void SaveFileToDisk(HttpPostedFileBase file)
