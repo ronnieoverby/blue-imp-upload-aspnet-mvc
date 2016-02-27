@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,22 +19,20 @@ namespace jquploadz.Controllers
             return View();
         }
 
-        public ActionResult Upload(HttpPostedFileBase[] files)
+        public ActionResult Upload(HttpPostedFileBase file)
         {
+
+             
+
             // save em or whatever
+            SaveFileToDisk(file);
 
-            foreach (var file in files)
-            {
-                SaveFileToDisk(file);
-            }
-
-
-            
+            return Content($"got 1 files!");
         }
 
         private static void SaveFileToDisk(HttpPostedFileBase file)
         {
-            var targetPath = Path.Combine(@"C:\Users\rdodo\Desktop\uploaded files", file.FileName);
+            var targetPath = Path.Combine(@"C:\Users\rdodo\Desktop\uploaded files", Guid.NewGuid().ToString());
             file.SaveAs(targetPath);
         }
     }

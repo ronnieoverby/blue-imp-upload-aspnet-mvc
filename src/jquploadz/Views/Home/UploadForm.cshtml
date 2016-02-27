@@ -6,7 +6,7 @@
 
 <h2>title</h2>
 
-<input id="fileupload" type="file" name="files[]" data-url="@Url.Action("Upload","Home")" multiple>
+<input id="fileupload" type="file" name="file" data-url="@Url.Action("Upload","Home")" multiple>
 
 @section scripts {
     @Scripts.Render("~/bundles/jqupload");
