@@ -10,10 +10,11 @@ namespace jquploadz.Controllers
 {
     public class HomeController : Controller
     {
-        private const int ThumbSize = 120;
+        private const int ThumbSize = 160;
 
         public ActionResult Index()
         {
+            ViewBag.ThumbSize = ThumbSize;
             return View();
         }
 
@@ -29,17 +30,30 @@ namespace jquploadz.Controllers
 
         private ActionResult Thumb(FileInfo file, string contentType)
         {
-            if (!contentType.StartsWith("image"))
-                return Redirect($"https://placehold.it/{ThumbSize}?text={Url.Encode(file.Extension)}");
-
-            using (var img = Image.FromFile(file.FullName))
-            using (var thumb = img.GetThumbnailImage(ThumbSize, ThumbSize, () => false, IntPtr.Zero))
+            if (contentType.StartsWith("image"))
             {
-                var ms = new MemoryStream();
-                thumb.Save(ms, img.RawFormat);
-                ms.Position = 0;
-                return File(ms, contentType);
+                try
+                {
+                    using (var img = Image.FromFile(file.FullName))
+                    {
+                        var thumbHeight = (int) (img.Height*(ThumbSize/(double) img.Width));
+
+                        using (var thumb = img.GetThumbnailImage(ThumbSize, thumbHeight, () => false, IntPtr.Zero))
+                        {
+                            var ms = new MemoryStream();
+                            thumb.Save(ms, img.RawFormat);
+                            ms.Position = 0;
+                            return File(ms, contentType);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // todo log exception
+                }
             }
+
+            return Redirect($"https://placehold.it/{ThumbSize}?text={Url.Encode(file.Extension)}");
         }
 
         [HttpPost]
@@ -51,12 +65,12 @@ namespace jquploadz.Controllers
         }
 
         [HttpGet]
-        public ActionResult Upload(string name = null)
+        public ActionResult Upload(IEnumerable<string> names = null)
         {
             var folder = GetUploadFolder();
 
             var files = from file in folder.GetFiles()
-                        where name == null || name.Equals(file.Name, StringComparison.OrdinalIgnoreCase)
+                        where names == null || names.Contains(file.Name, StringComparer.OrdinalIgnoreCase)
                         select new
                         {
                             deleteType = "POST",
@@ -73,11 +87,21 @@ namespace jquploadz.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+
+
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload()
         {
-            SaveFileToDisk(file);
-            return Upload(file.FileName);
+            var files = Request.Files
+                .Cast<string>()
+                .Select(k => Request.Files[k])
+                .ToArray();
+
+            foreach (var file in files)
+                SaveFileToDisk(file);
+
+            var names = files.Select(f => f.FileName);
+            return Upload(names);
         }
 
         private static void SaveFileToDisk(HttpPostedFileBase file)

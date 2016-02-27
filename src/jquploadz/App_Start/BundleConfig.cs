@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace jquploadz
 {
@@ -27,9 +26,7 @@ namespace jquploadz
                 "~/node_modules/blueimp-gallery/css/blueimp-gallery.css",
                 "~/node_modules/blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.css",
                 "~/node_modules/blueimp-file-upload/css/jquery.fileupload.css",
-                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui.css",
-                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-noscript.css",
-                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui-noscript.css"
+                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui.css"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqupload").Include(
