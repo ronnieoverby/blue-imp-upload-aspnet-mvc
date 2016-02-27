@@ -10,53 +10,45 @@ namespace jquploadz.Controllers
 {
     public class HomeController : Controller
     {
+        private const int ThumbSize = 120;
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult UploadForm()
-        {
-            return View();
-        }
-
-        
         public ActionResult GetFile(string name, bool thumbnail = false)
         {
-            var folder = GetUploadFolder();
-            var file = folder.GetFiles(name).Single();
+            var file = GetFile(name);
             var contentType = MimeMapping.GetMimeMapping(file.Name);
 
-            if (!contentType.StartsWith("image"))
-                return File(@"C:\Users\rdodo\Desktop\default_thumb.png", "image/png");
-
-
-            if (thumbnail)
-            {
-                using (var img = Image.FromFile(file.FullName))
-                using (var thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero))
-                {
-                    var ms = new MemoryStream();
-                    thumb.Save(ms, img.RawFormat);
-                    ms.Position = 0;
-                    return File(ms, contentType);
-                }
-            }
-
-            return File(file.FullName, contentType);
+            return thumbnail
+                ? Thumb(file, contentType)
+                : File(file.FullName, contentType);
         }
 
-        
+        private ActionResult Thumb(FileInfo file, string contentType)
+        {
+            if (!contentType.StartsWith("image"))
+                return Redirect($"https://placehold.it/{ThumbSize}?text={Url.Encode(file.Extension)}");
+
+            using (var img = Image.FromFile(file.FullName))
+            using (var thumb = img.GetThumbnailImage(ThumbSize, ThumbSize, () => false, IntPtr.Zero))
+            {
+                var ms = new MemoryStream();
+                thumb.Save(ms, img.RawFormat);
+                ms.Position = 0;
+                return File(ms, contentType);
+            }
+        }
 
         [HttpPost]
         public ActionResult DeleteFile(string name)
         {
-            var folder = GetUploadFolder();
-            var file = folder.GetFiles(name).Single();
+            var file = GetFile(name);
             file.Delete();
-            return Json("good!");
+            return Json($"{name} was deleted");
         }
-
 
         [HttpGet]
         public ActionResult Upload(string[] names = null)
@@ -66,29 +58,14 @@ namespace jquploadz.Controllers
             var files = from file in folder.GetFiles()
                         where names == null || names.Contains(file.Name)
                         select new
-                {
-                    deleteType= "POST",
-                    name = file.Name,
-                    size = file.Length,
-
-                    url = Url.Action("GetFile","Home",new
-                    {
-                        file.Name
-                    }),
-
-                    // todo return smaller version of image
-                    thumbnailUrl = Url.Action("GetFile","Home",new
-                    {
-                        file.Name,
-                        thumbnail = true
-                    }),
-
-                    deleteUrl = Url.Action("DeleteFile", "Home", new
-                    {
-                        file.Name
-                    }),
-
-                };
+                        {
+                            deleteType = "POST",
+                            name = file.Name,
+                            size = file.Length,
+                            url = Url.Action("GetFile", "Home", new { file.Name }),
+                            thumbnailUrl = Url.Action("GetFile", "Home", new { file.Name, thumbnail = true }),
+                            deleteUrl = Url.Action("DeleteFile", "Home", new { file.Name }),
+                        };
 
             return Json(new
             {
@@ -123,7 +100,19 @@ namespace jquploadz.Controllers
         {
             var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var upload = Path.Combine(desktop, "uploaded files");
-            return new DirectoryInfo(upload);
+            var di = new DirectoryInfo(upload);
+
+            if (!di.Exists)
+                di.Create();
+
+            return di;
+        }
+
+        private static FileInfo GetFile(string name)
+        {
+            var folder = GetUploadFolder();
+            var file = folder.GetFiles(name).Single();
+            return file;
         }
     }
 }
