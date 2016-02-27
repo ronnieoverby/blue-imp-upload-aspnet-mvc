@@ -5,6 +5,7 @@
     "blueimp-file-upload": "^9.12.1",
     "blueimp-gallery": "^2.18.1",
     "blueimp-load-image": "^2.6.0",
-    "blueimp-tmpl": "^3.3.0"
+    "blueimp-tmpl": "^3.3.0",
+    "font-awesome": "^4.5.0"
   }
 }

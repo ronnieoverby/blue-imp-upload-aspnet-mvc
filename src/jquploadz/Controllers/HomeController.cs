@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -19,21 +20,110 @@ namespace jquploadz.Controllers
             return View();
         }
 
-        public ActionResult Upload(HttpPostedFileBase file)
+        
+        public ActionResult GetFile(string name, bool thumbnail = false)
         {
-            // save em or whatever
-            SaveFileToDisk(file);
+            var folder = GetUploadFolder();
+            var file = folder.GetFiles(name).Single();
+            var contentType = MimeMapping.GetMimeMapping(file.Name);
+
+            if (!contentType.StartsWith("image"))
+                return File(@"C:\Users\rdodo\Desktop\default_thumb.png", "image/png");
+
+
+            if (thumbnail)
+            {
+                using (var img = Image.FromFile(file.FullName))
+                using (var thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero))
+                {
+                    var ms = new MemoryStream();
+                    thumb.Save(ms, img.RawFormat);
+                    ms.Position = 0;
+                    return File(ms, contentType);
+                }
+            }
+
+            return File(file.FullName, contentType);
+        }
+
+        
+
+        [HttpPost]
+        public ActionResult DeleteFile(string name)
+        {
+            var folder = GetUploadFolder();
+            var file = folder.GetFiles(name).Single();
+            file.Delete();
+            return Json("good!");
+        }
+
+
+        [HttpGet]
+        public ActionResult Upload(string[] names = null)
+        {
+            var folder = GetUploadFolder();
+
+            var files = from file in folder.GetFiles()
+                        where names == null || names.Contains(file.Name)
+                        select new
+                {
+                    deleteType= "POST",
+                    name = file.Name,
+                    size = file.Length,
+
+                    url = Url.Action("GetFile","Home",new
+                    {
+                        file.Name
+                    }),
+
+                    // todo return smaller version of image
+                    thumbnailUrl = Url.Action("GetFile","Home",new
+                    {
+                        file.Name,
+                        thumbnail = true
+                    }),
+
+                    deleteUrl = Url.Action("DeleteFile", "Home", new
+                    {
+                        file.Name
+                    }),
+
+                };
 
             return Json(new
             {
-                message = "YAY!"
-            });
+                files
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            var names = new List<string>();
+            foreach (string name in Request.Files)
+            {
+                var file = Request.Files[name];
+                names.Add(file.FileName);
+                SaveFileToDisk(file);
+            }
+
+
+            var actionResult = Upload(names.ToArray());
+            return actionResult;
         }
 
         private static void SaveFileToDisk(HttpPostedFileBase file)
         {
-            var targetPath = Path.Combine(@"C:\Users\rdodo\Desktop\uploaded files", Guid.NewGuid().ToString());
+            var folder = GetUploadFolder();
+            var targetPath = Path.Combine(folder.FullName, file.FileName);
             file.SaveAs(targetPath);
+        }
+
+        private static DirectoryInfo GetUploadFolder()
+        {
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var upload = Path.Combine(desktop, "uploaded files");
+            return new DirectoryInfo(upload);
         }
     }
 }

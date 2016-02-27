@@ -24,6 +24,7 @@ namespace jquploadz
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/jqupload-styles").Include(
+                "~/node_modules/blueimp-gallery/css/blueimp-gallery.css",
                 "~/node_modules/blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.css",
                 "~/node_modules/blueimp-file-upload/css/jquery.fileupload.css",
                 "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui.css",
@@ -36,7 +37,9 @@ namespace jquploadz
                 "~/node_modules/blueimp-tmpl/js/tmpl.js",
                 "~/node_modules/blueimp-load-image/js/load-image.all.min.js",
                 "~/node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.js",
+				"~/node_modules/blueimp-gallery/js/blueimp-gallery.js",
                 "~/node_modules/blueimp-gallery/js/jquery.blueimp-gallery.js",
+                "~/node_modules/blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.js",
                 "~/node_modules/blueimp-file-upload/js/jquery.iframe-transport.js",
                 "~/node_modules/blueimp-file-upload/js/jquery.fileupload.js",
                 "~/node_modules/blueimp-file-upload/js/jquery.fileupload-process.js",
@@ -50,6 +53,7 @@ namespace jquploadz
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/node_modules/font-awesome/css/font-awesome.css",
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
         }
