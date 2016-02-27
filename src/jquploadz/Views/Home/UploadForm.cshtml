@@ -1,0 +1,35 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Upload some files!";
+}
+
+<h2>title</h2>
+
+<input id="fileupload" type="file" name="files[]" data-url="@Url.Action("Upload","Home")" multiple>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqupload");
+    <script>
+        
+        $(function () {
+
+            // page ready
+
+            $('#fileupload').fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('<p/>').text(file.name).appendTo(document.body);
+                    });
+                }
+            });
+
+
+
+        });
+
+
+    </script>
+
+}

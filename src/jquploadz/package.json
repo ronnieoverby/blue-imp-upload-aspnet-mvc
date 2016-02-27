@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "blueimp-file-upload": "^9.12.1"
+  }
+}
