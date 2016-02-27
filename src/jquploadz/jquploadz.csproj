@@ -133,14 +133,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\css\bootstrap-image-gallery.css" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\css\bootstrap-image-gallery.min.css" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\css\demo.css" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\img\loading.gif" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\index.html" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\js\bootstrap-image-gallery.js" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\js\bootstrap-image-gallery.min.js" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\js\demo.js" />
     <Content Include="node_modules\blueimp-canvas-to-blob\js\canvas-to-blob.js" />
     <Content Include="node_modules\blueimp-canvas-to-blob\js\canvas-to-blob.min.js" />
     <Content Include="node_modules\blueimp-canvas-to-blob\test\index.html" />
@@ -264,11 +256,6 @@
     <Content Include="node_modules\blueimp-file-upload\server\gae-python\app.yaml" />
     <Content Include="node_modules\blueimp-file-upload\server\php\files\.htaccess" />
     <Content Include="node_modules\blueimp-file-upload\server\php\files\.npmignore" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\.npmignore" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\css\bootstrap-image-gallery.min.css.map" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\js\bootstrap-image-gallery.min.js.map" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\package.json" />
-    <Content Include="node_modules\blueimp-bootstrap-image-gallery\README.md" />
     <Content Include="node_modules\blueimp-tmpl\.npmignore" />
     <Content Include="node_modules\blueimp-tmpl\.travis.yml" />
     <Content Include="node_modules\blueimp-tmpl\js\tmpl.min.js.map" />
@@ -327,8 +314,10 @@
     <Content Include="node_modules\font-awesome\scss\_stacked.scss" />
     <Content Include="node_modules\font-awesome\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-1.12.0.intellisense.js" />
+    <Content Include="Scripts\jquery-1.12.0.js" />
+    <Content Include="Scripts\jquery-1.12.0.min.js" />
+    <Content Include="Scripts\jquery-1.12.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -364,7 +353,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

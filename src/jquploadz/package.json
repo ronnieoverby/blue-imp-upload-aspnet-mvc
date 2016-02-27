@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "blueimp-bootstrap-image-gallery": "^3.4.2",
     "blueimp-canvas-to-blob": "^3.3.0",
     "blueimp-file-upload": "^9.12.1",
     "blueimp-gallery": "^2.18.1",
