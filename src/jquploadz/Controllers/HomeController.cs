@@ -21,13 +21,13 @@ namespace jquploadz.Controllers
 
         public ActionResult Upload(HttpPostedFileBase file)
         {
-
-             
-
             // save em or whatever
             SaveFileToDisk(file);
 
-            return Content($"got 1 files!");
+            return Json(new
+            {
+                message = "YAY!"
+            });
         }
 
         private static void SaveFileToDisk(HttpPostedFileBase file)

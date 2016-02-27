@@ -23,13 +23,32 @@ namespace jquploadz
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqupload").Include(
-                "~/node_modules/blueimp-file-upload/js/jquery.fileupload.js",
-                "~/node_modules/blueimp-file-upload/js/jquery.iframe-transport.js",
-                "~/node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"
+            bundles.Add(new StyleBundle("~/Content/jqupload-styles").Include(
+                "~/node_modules/blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.css",
+                "~/node_modules/blueimp-file-upload/css/jquery.fileupload.css",
+                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui.css",
+                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-noscript.css",
+                "~/node_modules/blueimp-file-upload/css/jquery.fileupload-ui-noscript.css"
                 ));
 
-         
+            bundles.Add(new ScriptBundle("~/bundles/jqupload").Include(
+                "~/node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js",
+                "~/node_modules/blueimp-tmpl/js/tmpl.js",
+                "~/node_modules/blueimp-load-image/js/load-image.all.min.js",
+                "~/node_modules/blueimp-canvas-to-blob/js/canvas-to-blob.js",
+                "~/node_modules/blueimp-gallery/js/jquery.blueimp-gallery.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.iframe-transport.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-process.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-image.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-audio.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-video.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-validate.js",
+                "~/node_modules/blueimp-file-upload/js/jquery.fileupload-ui.js",
+                "~/Scripts/jqupload.main.js"
+                ));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
